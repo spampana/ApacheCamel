@@ -1,0 +1,36 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  <!-- the listener that kick-starts Spring -->
+
+
+<!-- location of spring xml files -->
+<!-- And since cxf-config.xml is dependent on camel-config.xml we need to have correct ordering in our web.xml where we have defined the XML files to load by Spring. So we set the camel-config.xml before the cxf-config.xml so Spring have created the SpringCamelContext and registered it in its registry with the id = camel. -->
+<context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:camel-config.xml</param-value>
+    <param-value>classpath:cxf-config.xml</param-value>
+</context-param>
+
+
+<!-- CXF servlet -->
+<servlet>
+    <servlet-name>CXFServlet</servlet-name>
+    <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+</servlet>
+ 
+<!-- all our webservices are mapped under this URI pattern -->
+<servlet-mapping>
+    <servlet-name>CXFServlet</servlet-name>
+    <url-pattern>/webservices/*</url-pattern>
+</servlet-mapping>
+
+<listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+
+</web-app>
